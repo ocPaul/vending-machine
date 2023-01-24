@@ -1,7 +1,13 @@
 #include "main.h"
 
-StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3, COIL_4);
+int servoPin_1 = 13;
+int servoPin_2 = 12;
+int freq = 50;
+int channel_1 = 0;
+int channel_2 = 1;
+int resolution = 16;
 
+StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3, COIL_4);
 
 VENDING_STATE poll_input() {
   //reads state of Start Button
@@ -11,6 +17,18 @@ VENDING_STATE poll_input() {
   int tipSwich03CurrState = digitalRead(23);
 
   return POLLING;
+}
+
+VENDING_STATE servo_1() {
+    ledcWrite(channel_1, 3277);
+    delay(1000);
+    ledcWrite(channel_1, 6553);
+}
+
+VENDING_STATE servo_2() {
+    ledcWrite(channel_2, 3277);
+    delay(1000);
+    ledcWrite(channel_2, 6553);
 }
 
 VENDING_STATE drive_motor(STEP_DIRECTION direction) {
@@ -31,9 +49,8 @@ VENDING_STATE drive_motor(STEP_DIRECTION direction) {
   return POLLING;
 }
 
-VENDING_STATE drive_servo() {
+VENDING_STATE servo_off() {
   
-  return MOTOR_BACKWARD;
 }
 
 void state_machine_poll() {
@@ -50,11 +67,13 @@ void state_machine_poll() {
 
 
 void setup() {
-  // initializes Start Button as Pull Up Input
-  pinMode(14, INPUT_PULLUP);
-  pinMode(18, INPUT_PULLDOWN);
-  pinMode(19, INPUT_PULLDOWN);
-  pinMode(23, INPUT_PULLDOWN);
+  ledcSetup(channel_1, freq, resolution);
+  ledcSetup(channel_2, freq, resolution);
+
+  ledcAttachPin(servoPin_1, channel_1);
+  ledcAttachPin(servoPin_2, channel_2);
+  
+  stepper_controller.MoveSteps(5, COUNTERCLOCKWISE);
 }
 void loop() {
   state_machine_poll();

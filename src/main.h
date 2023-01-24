@@ -7,16 +7,17 @@
 #define COIL_3 35
 #define COIL_4 34
 
+#define MOTOR_DRIVE_TIME_MULTIPLIER 5*1000
+
 enum VENDING_STATE {
     POLLING,
     MOTOR_FORWARD,
-    SERVO_ON,
-    SERVO_OFF,
+    DRIVE_SERVO,
     MOTOR_BACKWARD,
 };
 
 VENDING_STATE state;
-VENDING_STATE next_state;
+VENDING_STATE next_state = POLLING;
 
 void state_machine_poll();
 VENDING_STATE poll_input();

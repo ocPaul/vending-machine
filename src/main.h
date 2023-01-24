@@ -1,4 +1,11 @@
 #include <stdint.h>
+#include <Arduino.h>
+#include <stepper_controller.h>
+
+#define COIL_1 33
+#define COIL_2 32
+#define COIL_3 35
+#define COIL_4 34
 
 enum VENDING_STATE {
     POLLING,

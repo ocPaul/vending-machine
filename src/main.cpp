@@ -4,6 +4,11 @@ StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3,
 
 
 VENDING_STATE poll_input() {
+  //reads state of Start Button
+  int startButtonCurrState = digitalRead(14);
+  int tipSwich01CurrState = digitalRead(18);
+  int tipSwich02CurrState = digitalRead(19);
+  int tipSwich03CurrState = digitalRead(23);
 
   return POLLING;
 }
@@ -45,9 +50,12 @@ void state_machine_poll() {
 
 
 void setup() {
-
+  // initializes Start Button as Pull Up Input
+  pinMode(14, INPUT_PULLUP);
+  pinMode(18, INPUT_PULLDOWN);
+  pinMode(19, INPUT_PULLDOWN);
+  pinMode(23, INPUT_PULLDOWN);
 }
-
 void loop() {
   state_machine_poll();
 }

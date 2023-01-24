@@ -1,10 +1,35 @@
-#include <Arduino.h>
-#include <stepper_controller.h>
+#include "main.h"
 
-#define COIL_1 33
-#define COIL_2 32
-#define COIL_3 35
-#define COIL_4 34
+
+VENDING_STATE poll_input() {
+
+}
+
+VENDING_STATE motor_forward() {
+
+}
+
+VENDING_STATE motor_backward() {
+
+}
+
+VENDING_STATE servo_on() {
+
+}
+
+VENDING_STATE servo_off() {
+  
+}
+
+void state_machine_poll() {
+  state = next_state;
+  switch (state)
+  {
+  case POLLING: next_state=POLLING; break;
+  default:
+    break;
+  }
+}
 
 StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3, COIL_4);
 

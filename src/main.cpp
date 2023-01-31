@@ -20,12 +20,14 @@ VENDING_STATE poll_input() {
 }
 
 VENDING_STATE servo_1() {
-    ledcWrite(channel_1, 3277);
+    //rotats the servo of channel_1
+    ledcWrite(channel_1, 3277); //timer tick rate for a clockwise 180° turn 
     delay(1000);
-    ledcWrite(channel_1, 6553);
+    ledcWrite(channel_1, 6553); //timer tick rate for a counter-clockwise 180° turn 
 }
 
 VENDING_STATE servo_2() {
+    //rotats the servo of channel_2
     ledcWrite(channel_2, 3277);
     delay(1000);
     ledcWrite(channel_2, 6553);

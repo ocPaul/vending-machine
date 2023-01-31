@@ -27,6 +27,7 @@ VENDING_STATE servo_1() {
 }
 
 VENDING_STATE servo_2() {
+    //rotats the servo of channel_2
     ledcWrite(channel_2, 3277);
     delay(1000);
     ledcWrite(channel_2, 6553);

@@ -23,10 +23,10 @@ VENDING_STATE poll_input() {
 }
 
 void servo_1() {
-    //rotates the servo connected to channel
-    ledcWrite(SERVO_CHANNEL_1, 3277); //turns the servo 180° clockwise
+    //rotates the servo connected to channel_1
+    ledcWrite(SERVO_CHANNEL_1, 3277); //turns the servo to 90° clockwise
     delay(1000);
-    ledcWrite(SERVO_CHANNEL_1, 6553); //turns the servo 180° counterclockwise
+    ledcWrite(SERVO_CHANNEL_1, 6553); //turns the servo to 90° counterclockwise
 }
 
 void servo_2() {

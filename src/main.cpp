@@ -2,17 +2,6 @@
 
 StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3, COIL_4);
 
-void servo_1() {
-  ledcWrite(SERVO_CHANNEL_1, 3277);
-  delay(1000);
-  ledcWrite(SERVO_CHANNEL_1, 6553);
-}
-
-void servo_2() {
-  ledcWrite(SERVO_CHANNEL_2, 3277);
-  delay(1000);
-  ledcWrite(SERVO_CHANNEL_2, 6553);
-}
 
 VENDING_STATE poll_input() {
   //reads state of Start Button
@@ -33,6 +22,19 @@ VENDING_STATE poll_input() {
   return POLLING;
 }
 
+void servo_1() {
+    //rotates the servo connected to channel
+    ledcWrite(SERVO_CHANNEL_1, 3277); //turns the servo 180° clockwise
+    delay(1000);
+    ledcWrite(SERVO_CHANNEL_1, 6553); //turns the servo 180° counterclockwise
+}
+
+void servo_2() {
+    //rotats the servo of channel_2
+    ledcWrite(SERVO_CHANNEL_2, 3277);
+    delay(1000);
+    ledcWrite(SERVO_CHANNEL_2, 6553);
+}
 
 VENDING_STATE drive_motor(STEP_DIRECTION direction) {
 

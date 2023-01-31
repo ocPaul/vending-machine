@@ -3,9 +3,9 @@
 int servoPin_1 = 13;
 int servoPin_2 = 12;
 int freq = 50;
-int channel_1 = 0;
-int channel_2 = 1;
-int resolution = 16;
+int channel_1 = 0;  //first PWM timer
+int channel_2 = 1;  //second PWM timer
+int resolution = 16;  //PWM timer tick rate
 
 StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3, COIL_4);
 
@@ -20,13 +20,14 @@ VENDING_STATE poll_input() {
 }
 
 VENDING_STATE servo_1() {
-    //rotates the servo connected to channel
-    ledcWrite(channel_1, 3277); //turns the servo 180° clockwise
+    //rotates the servo connected to channel_1
+    ledcWrite(channel_1, 3277); //turns the servo to 90° clockwise
     delay(1000);
-    ledcWrite(channel_1, 6553); //turns the servo 180° counterclockwise
+    ledcWrite(channel_1, 6553); //turns the servo to 90° counterclockwise
 }
 
 VENDING_STATE servo_2() {
+    //rotates the servo connected to channel_2
     ledcWrite(channel_2, 3277);
     delay(1000);
     ledcWrite(channel_2, 6553);

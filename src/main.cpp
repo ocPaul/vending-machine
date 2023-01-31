@@ -1,13 +1,18 @@
 #include "main.h"
 
-int servoPin_1 = 13;
-int servoPin_2 = 12;
-int freq = 50;
-int channel_1 = 0;
-int channel_2 = 1;
-int resolution = 16;
-
 StepperController stepper_controller = StepperController(COIL_1, COIL_2, COIL_3, COIL_4);
+
+void servo_1() {
+  ledcWrite(SERVO_CHANNEL_1, 3277);
+  delay(1000);
+  ledcWrite(SERVO_CHANNEL_1, 6553);
+}
+
+void servo_2() {
+  ledcWrite(SERVO_CHANNEL_2, 3277);
+  delay(1000);
+  ledcWrite(SERVO_CHANNEL_2, 6553);
+}
 
 VENDING_STATE poll_input() {
   //reads state of Start Button
@@ -16,20 +21,18 @@ VENDING_STATE poll_input() {
   int tipSwich02CurrState = digitalRead(19);
   int tipSwich03CurrState = digitalRead(23);
 
+  if (startButtonCurrState == LOW)
+  {
+    bin_buttons = 0b000;
+    bin_buttons |= (tipSwich01CurrState == HIGH) ? 0b001 : 0;
+    bin_buttons |= (tipSwich02CurrState == HIGH) ? 0b010 : 0;
+    bin_buttons |= (tipSwich03CurrState == HIGH) ? 0b100 : 0;
+    return MOTOR_FORWARD;
+  }
+
   return POLLING;
 }
 
-VENDING_STATE servo_1() {
-    ledcWrite(channel_1, 3277);
-    delay(1000);
-    ledcWrite(channel_1, 6553);
-}
-
-VENDING_STATE servo_2() {
-    ledcWrite(channel_2, 3277);
-    delay(1000);
-    ledcWrite(channel_2, 6553);
-}
 
 VENDING_STATE drive_motor(STEP_DIRECTION direction) {
 
@@ -49,17 +52,14 @@ VENDING_STATE drive_motor(STEP_DIRECTION direction) {
   return POLLING;
 }
 
-VENDING_STATE servo_off() {
-  
-}
-
 void state_machine_poll() {
   state = next_state;
+  Serial.println(state);
   switch (state)
   {
   case POLLING: next_state=poll_input(); break;
   case MOTOR_FORWARD: next_state=drive_motor(CLOCKWISE); break;
-  case DRIVE_SERVO: next_state=drive_servo(); break;
+  case DRIVE_SERVO: next_state=MOTOR_BACKWARD; servo_1(); servo_2; break;
   case MOTOR_BACKWARD: next_state=drive_motor(COUNTERCLOCKWISE); break;
   default: next_state = POLLING; break;
   }
@@ -67,14 +67,33 @@ void state_machine_poll() {
 
 
 void setup() {
-  ledcSetup(channel_1, freq, resolution);
-  ledcSetup(channel_2, freq, resolution);
+  pinMode(SERVO_PIN_1, OUTPUT);
+  pinMode(SERVO_PIN_2, OUTPUT);
 
-  ledcAttachPin(servoPin_1, channel_1);
-  ledcAttachPin(servoPin_2, channel_2);
+  pinMode(14, INPUT);
+  pinMode(18, INPUT);
+  pinMode(19, INPUT);
+  pinMode(23, INPUT);
   
-  stepper_controller.MoveSteps(5, COUNTERCLOCKWISE);
+  ledcSetup(SERVO_CHANNEL_1, SERVO_FREQUENZY, SERVO_RESOLUTION);
+  ledcSetup(SERVO_CHANNEL_2, SERVO_FREQUENZY, SERVO_RESOLUTION);
+
+  ledcAttachPin(SERVO_PIN_1, SERVO_CHANNEL_1);
+  ledcAttachPin(SERVO_PIN_2, SERVO_CHANNEL_2);
+
+
+  Serial.begin(9600);
 }
 void loop() {
   state_machine_poll();
+  int startButtonCurrState = digitalRead(14);
+  int tipSwich01CurrState = digitalRead(18);
+  int tipSwich02CurrState = digitalRead(19);
+  int tipSwich03CurrState = digitalRead(23);
+  delay(5000);
+  Serial.println("-----------");
+  Serial.println(startButtonCurrState);
+  Serial.println(tipSwich01CurrState);
+  Serial.println(tipSwich02CurrState);
+  Serial.println(tipSwich03CurrState);
 }

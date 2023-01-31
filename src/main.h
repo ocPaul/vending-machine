@@ -7,6 +7,13 @@
 #define COIL_3 35
 #define COIL_4 34
 
+#define SERVO_PIN_1 13
+#define SERVO_PIN_2 12
+#define SERVO_FREQUENZY 50
+#define SERVO_CHANNEL_1 0
+#define SERVO_CHANNEL_2 1
+#define SERVO_RESOLUTION 16
+
 #define MOTOR_DRIVE_TIME_MULTIPLIER 5*1000
 
 enum VENDING_STATE {
@@ -22,6 +29,5 @@ VENDING_STATE next_state = POLLING;
 void state_machine_poll();
 VENDING_STATE poll_input();
 VENDING_STATE drive_motor();
-VENDING_STATE drive_servo();
 
 uint8_t bin_buttons = 0b000;
